@@ -13,19 +13,25 @@ app.post("/sign-up", (req,res)=> {
     serverUsers.push(req.body)
     res.send("OK")
 })
+
 app.get("/sign-up", (req,res)=> {
     res.send(serverUsers)
 })
 
 
+
 app.post("/tweets", (req,res)=> {
-    const {username, tweet} = req.body
     serverTweets.push(req.body)
     res.send("OK")
 })
 
 app.get("/tweets", (req,res)=> {
-    res.send(serverTweets)
+    const lastTweets = serverTweets.filter((obj, i)=> i >= serverTweets.length-10 && obj)
+    const lastTweetsReturn = lastTweets.map((obj,i)=> obj && 
+    {username: obj.username,
+    avatar: serverUsers.find(objusers=> objusers.username === obj.username).avatar,
+    tweet: obj.tweet})
+    res.send(lastTweetsReturn)
 })
 
 
