@@ -51,4 +51,17 @@ app.get("/tweets", (req, res) => {
   res.send(lastTweetsReturn);
 });
 
+app.get("/tweets/:username", (req,res)=>{
+    const username= req.params.username
+    const userTweets = serverTweets.filter(obj=> obj.username===username)
+    const userTweetsReturn = userTweets.map(obj=> obj && {
+        username: obj.username,
+        avatar: serverUsers.find(
+          (objUsers) => objUsers.username === obj.username
+        ).avatar,
+        tweet: obj.tweet,
+      }).reverse()
+    res.send(userTweetsReturn)
+})
+
 app.listen(5000);
