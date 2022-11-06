@@ -21,15 +21,21 @@ app.post("/sign-up", (req, res) => {
 });
 
 app.post("/tweets", (req, res) => {
-    const{username, tweet} = req.body
-    
-    if (!username || !tweet){
-      res.status(400).send("Todos os campos são obrigatórios!")
-      return
-    }
+  const{tweet} = req.body
+  const username = req.headers.user
   
-    serverTweets.push(req.body);
-  res.status(201).send("OK");
+  if (!username || !tweet){
+    res.status(400).send("Todos os campos são obrigatórios!")
+    return
+  }
+
+  const tweetsReturn = {
+    username,
+    tweet
+  }
+
+  serverTweets.push(tweetsReturn);
+res.status(201).send("OK");
 });
 
 app.get("/tweets", (req, res) => {
